@@ -28,6 +28,7 @@ from . import _fitsio_wrap
 import copy
 
 if sys.version_info >= (3,0):
+    from functools import reduce
     xrange = range
     unicode = str
     long = int
