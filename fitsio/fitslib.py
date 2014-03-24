@@ -34,6 +34,7 @@ if sys.version_info >= (3,0):
     long = int
     basestring = (str, bytes)
 
+
 def cfitsio_version(asfloat=False):
     """
     Return the cfitsio version as a string.
@@ -789,7 +790,7 @@ class FITS(object):
             if len(units) != len(names):
                 raise ValueError("names and units must be same length")
         if extname is not None:
-            if not isinstance(extname,str):
+            if not isinstance(extname, basestring):
                 raise ValueError("extension name must be a string")
 
         if extname is not None and extver is not None:
@@ -878,6 +879,8 @@ class FITS(object):
         hdu = self.hdu_list[self._iter_index]
         self._iter_index += 1
         return hdu
+
+    __next__ = next
 
     def __len__(self):
         """
@@ -2108,7 +2111,7 @@ class TableHDU(HDUBase):
                 colnump = thesecol[i]
                 name = array.dtype.names[wvar[i]]
                 dlist = self._FITS.read_var_column_as_list(self._ext + 1,colnump,rows)
-                if isinstance(dlist[0],str):
+                if isinstance(dlist[0],basestring):
                     is_string = True
                 else:
                     is_string = False
@@ -2362,7 +2365,7 @@ class TableHDU(HDUBase):
                 # we are forced to read this as an object array
                 return self._read_var_column(colnum, rows, 'object')
 
-            if isinstance(dlist[0],str):
+            if isinstance(dlist[0], basestring):
                 descr = 'S%d' % max_size
                 array = numpy.fromiter(dlist, descr)
             else:
@@ -2513,6 +2516,8 @@ class TableHDU(HDUBase):
         efficient buffering.
         """
         return self._get_next_buffered_row()
+
+    __next__ = next
 
     def _get_next_buffered_row(self):
         """
@@ -3262,12 +3267,13 @@ def npy_obj2fits(data, name=None):
         first = data[name][0]
 
     # note numpy._string is an instance of str, so str is good enough
-    if isinstance(first, str):
+    if isinstance(first, basestring):
         fits_dtype = _table_npy2fits_form['S']
     else:
         arr0 = numpy.array(first,copy=False)
         dtype0 = arr0.dtype
         npy_dtype = dtype0.descr[0][1][1:]
+
         if npy_dtype[0] == 'S':
             raise ValueError("Field '%s' is an arrays of strings, this is "
                              "not allowed in variable length columns" % name)
