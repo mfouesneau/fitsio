@@ -32,7 +32,7 @@ if sys.version_info >= (3,0):
     xrange = range
     unicode = str
     long = int
-
+    basestring = (str, bytes)
 
 def cfitsio_version(asfloat=False):
     """
@@ -3436,7 +3436,6 @@ class FITSHDR:
         """
         Add a new record.  Strip quotes from around strings.
         """
-        import copy
         record = copy.deepcopy(record_in)
 
         self.check_record(record)

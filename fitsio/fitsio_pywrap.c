@@ -1746,7 +1746,7 @@ int write_var_string_column(
             PyObject* args=PyTuple_New(1);
 
             PyTuple_SetItem(args,0,el);
-            el_string = PyString_Format(format, args);
+            el_string = PyString_FromFormat(format, args);
 
             Py_XDECREF(args);
 

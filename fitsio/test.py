@@ -8,10 +8,14 @@ import fitsio
 
 import unittest
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
+    p3k = True
     xrange = range
     unicode = str
     long = int
+    basestring = (str, bytes)
+else:
+    p3k = False
 
 
 def test():
@@ -267,7 +271,11 @@ class TestReadWrite(unittest.TestCase):
                     self.compare_array(data, rdata, "images")
 
                     rh = fits[-1].read_header()
-                    for k, v in header.iteritems():
+                    if p3k:
+                        it = header.items()
+                    else:
+                        it = header.iteritems()
+                    for k, v in it:
                         rv = rh[k]
                         if isinstance(rv, str):
                             v = v.strip()
@@ -297,7 +305,11 @@ class TestReadWrite(unittest.TestCase):
                     self.compare_array(data[4:12, 9:17], rdata, "images")
 
                     rh = fits[-1].read_header()
-                    for k, v in header.iteritems():
+                    if p3k:
+                        it = header.items()
+                    else:
+                        it = header.iteritems()
+                    for k, v in it:
                         rv = rh[k]
                         if isinstance(rv, str):
                             v = v.strip()
@@ -942,8 +954,8 @@ class TestReadWrite(unittest.TestCase):
         try:
             with fitsio.FITS(fname, 'rw', clobber=True) as fits:
 
-                fits.write_table(
-                    self.ascii_data, table_type='ascii', header=self.keys, extname='mytable')
+                fits.write_table(self.ascii_data, table_type='ascii',
+                                 header=self.keys, extname='mytable')
 
                 # cfitsio always reports type as i4 and f8, period, even if if
                 # written with higher precision.  Need to fix that somehow
@@ -952,11 +964,11 @@ class TestReadWrite(unittest.TestCase):
                     if d.dtype == numpy.float64:
                         # note we should be able to do 1.11e-16 in principle, but in practice
                         # we get more like 2.15e-16
-                        self.compare_array_tol(self.ascii_data[
-                                               f], d, 2.15e-16, "table field read '%s'" % f)
+                        self.compare_array_tol(self.ascii_data[f], d, 2.15e-16,
+                                               "table field read '%s'" % f)
                     else:
-                        self.compare_array(self.ascii_data[
-                                           f], d, "table field read '%s'" % f)
+                        self.compare_array(self.ascii_data[f], d,
+                                           "table field read '%s'" % f)
 
                 rows = [1, 3]
                 for f in self.ascii_data.dtype.names:

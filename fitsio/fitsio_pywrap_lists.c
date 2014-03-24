@@ -126,12 +126,12 @@ int stringlist_addfrom_listobj(struct stringlist* slist,
     for (i=0; i<size; i++) {
         PyObject* tmp = PyList_GetItem(listObj, i);
         const char* tmpstr;
-        if (!PyBytes_Check(tmp)) {
+        if (!PyString_Check(tmp)) {
             PyErr_Format(PyExc_ValueError, 
                          "Expected only strings in %s list.", listname);
             return 1;
         }
-        tmpstr = (const char*) PyBytes_AsString(tmp);
+        tmpstr = (const char*) PyString_AsString(tmp);
         stringlist_push(slist, tmpstr);
     }
     return 0;

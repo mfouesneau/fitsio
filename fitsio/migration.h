@@ -110,7 +110,7 @@
     #define PyStringN(c, n)              PyUnicode_FromStringAndSize(c, n)
     #define PyStringObject               PyUnicodeObject
     #define PyStringZ(c)                 PyUnicode_FromString(c)
-    #define PyString_AsString            PyUnicode_AsUnicode
+    #define PyString_AsString            PyUnicode_AsUTF8
     #define PyString_Check               PyUnicode_Check
     #define PyString_CheckExact          PyUnicode_CheckExact
     #define PyString_Format              PyUnicode_Format
