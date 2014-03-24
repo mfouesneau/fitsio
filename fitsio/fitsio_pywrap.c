@@ -3529,45 +3529,48 @@ PyFITS_cfitsio_version(void) {
 
 
 static PyMethodDef PyFITSObject_methods[] = {
-    {"filename",             (PyCFunction)PyFITSObject_filename,             METH_VARARGS,  "filename\n\nReturn the name of the file."},
+// Note: the calling convention flags suppose that METH_KEYWORDS alone is
+// equivalent to METH_VARARGS | METH_KEYWORDS). 
+// However Py3k raises errors if both are not provided
+    {"filename"                     , (PyCFunction)PyFITSObject_filename                     , METH_VARARGS                 , "filename\n\nReturn the name of the file."}                                                                                                     , 
 
-    {"where",                (PyCFunction)PyFITSObject_where,                METH_VARARGS,  "where\n\nReturn an index array where the input expression evaluates to true."},
+    {"where"                        , (PyCFunction)PyFITSObject_where                        , METH_VARARGS                 , "where\n\nReturn an index array where the input expression evaluates to true."}                                                                 , 
 
-    {"movabs_hdu",           (PyCFunction)PyFITSObject_movabs_hdu,           METH_VARARGS,  "movabs_hdu\n\nMove to the specified HDU."},
-    {"movnam_hdu",           (PyCFunction)PyFITSObject_movnam_hdu,           METH_VARARGS,  "movnam_hdu\n\nMove to the specified HDU by name and return the hdu number."},
+    {"movabs_hdu"                   , (PyCFunction)PyFITSObject_movabs_hdu                   , METH_VARARGS                 , "movabs_hdu\n\nMove to the specified HDU."}                                                                                                     , 
+    {"movnam_hdu"                   , (PyCFunction)PyFITSObject_movnam_hdu                   , METH_VARARGS                 , "movnam_hdu\n\nMove to the specified HDU by name and return the hdu number."}                                                                   , 
 
-    {"get_hdu_info",         (PyCFunction)PyFITSObject_get_hdu_info,         METH_VARARGS,  "get_hdu_info\n\nReturn a dict with info about the specified HDU."},
+    {"get_hdu_info"                 , (PyCFunction)PyFITSObject_get_hdu_info                 , METH_VARARGS                 , "get_hdu_info\n\nReturn a dict with info about the specified HDU."}                                                                             , 
 
-    {"read_image",           (PyCFunction)PyFITSObject_read_image,           METH_VARARGS,  "read_image\n\nRead the entire n-dimensional image array.  No checking of array is done."},
-    {"read_image_slice",     (PyCFunction)PyFITSObject_read_image_slice,     METH_VARARGS,  "read_image_slice\n\nRead an image slice."},
-    {"read_column",          (PyCFunction)PyFITSObject_read_column,          METH_VARARGS,  "read_column\n\nRead the column into the input array.  No checking of array is done."},
-    {"read_var_column_as_list",          (PyCFunction)PyFITSObject_read_var_column_as_list,          METH_VARARGS,  "read_var_column_as_list\n\nRead the variable length column as a list of arrays."},
-    {"read_columns_as_rec",  (PyCFunction)PyFITSObject_read_columns_as_rec,  METH_VARARGS,  "read_columns_as_rec\n\nRead the specified columns into the input rec array.  No checking of array is done."},
-    {"read_columns_as_rec_byoffset",  (PyCFunction)PyFITSObject_read_columns_as_rec_byoffset,  METH_VARARGS,  "read_columns_as_rec_byoffset\n\nRead the specified columns into the input rec array at the specified offsets.  No checking of array is done."},
-    {"read_rows_as_rec",     (PyCFunction)PyFITSObject_read_rows_as_rec,     METH_VARARGS,  "read_rows_as_rec\n\nRead the subset of rows into the input rec array.  No checking of array is done."},
-    {"read_as_rec",          (PyCFunction)PyFITSObject_read_as_rec,          METH_VARARGS,  "read_as_rec\n\nRead a set of rows into the input rec array.  No significant checking of array is done."},
-    {"read_header",          (PyCFunction)PyFITSObject_read_header,          METH_VARARGS,  "read_header\n\nRead the entire header as a list of dictionaries."},
+    {"read_image"                   , (PyCFunction)PyFITSObject_read_image                   , METH_VARARGS                 , "read_image\n\nRead the entire n-dimensional image array.  No checking of array is done."}                                                      , 
+    {"read_image_slice"             , (PyCFunction)PyFITSObject_read_image_slice             , METH_VARARGS                 , "read_image_slice\n\nRead an image slice."}                                                                                                     , 
+    {"read_column"                  , (PyCFunction)PyFITSObject_read_column                  , METH_VARARGS                 , "read_column\n\nRead the column into the input array.  No checking of array is done."}                                                          , 
+    {"read_var_column_as_list"      , (PyCFunction)PyFITSObject_read_var_column_as_list      , METH_VARARGS                 , "read_var_column_as_list\n\nRead the variable length column as a list of arrays."}                                                              , 
+    {"read_columns_as_rec"          , (PyCFunction)PyFITSObject_read_columns_as_rec          , METH_VARARGS                 , "read_columns_as_rec\n\nRead the specified columns into the input rec array.  No checking of array is done."}                                   , 
+    {"read_columns_as_rec_byoffset" , (PyCFunction)PyFITSObject_read_columns_as_rec_byoffset , METH_VARARGS                 , "read_columns_as_rec_byoffset\n\nRead the specified columns into the input rec array at the specified offsets.  No checking of array is done."} , 
+    {"read_rows_as_rec"             , (PyCFunction)PyFITSObject_read_rows_as_rec             , METH_VARARGS                 , "read_rows_as_rec\n\nRead the subset of rows into the input rec array.  No checking of array is done."}                                         , 
+    {"read_as_rec"                  , (PyCFunction)PyFITSObject_read_as_rec                  , METH_VARARGS                 , "read_as_rec\n\nRead a set of rows into the input rec array.  No significant checking of array is done."}                                       , 
+    {"read_header"                  , (PyCFunction)PyFITSObject_read_header                  , METH_VARARGS                 , "read_header\n\nRead the entire header as a list of dictionaries."}                                                                             , 
 
-    {"create_image_hdu",     (PyCFunction)PyFITSObject_create_image_hdu,     METH_KEYWORDS, "create_image_hdu\n\nWrite the input image to a new extension."},
-    {"create_table_hdu",     (PyCFunction)PyFITSObject_create_table_hdu,     METH_KEYWORDS, "create_table_hdu\n\nCreate a new table with the input parameters."},
-    {"insert_col",           (PyCFunction)PyFITSObject_insert_col,           METH_KEYWORDS, "insert_col\n\nInsert a new column."},
+    {"create_image_hdu"             , (PyCFunction)PyFITSObject_create_image_hdu             , METH_VARARGS | METH_KEYWORDS , "create_image_hdu\n\nWrite the input image to a new extension."}                                                                                , 
+    {"create_table_hdu"             , (PyCFunction)PyFITSObject_create_table_hdu             , METH_VARARGS | METH_KEYWORDS , "create_table_hdu\n\nCreate a new table with the input parameters."}                                                                            , 
+    {"insert_col"                   , (PyCFunction)PyFITSObject_insert_col                   , METH_VARARGS | METH_KEYWORDS , "insert_col\n\nInsert a new column."}                                                                                                           , 
 
-    {"write_checksum",       (PyCFunction)PyFITSObject_write_checksum,       METH_VARARGS,  "write_checksum\n\nCompute and write the checksums into the header."},
-    {"verify_checksum",      (PyCFunction)PyFITSObject_verify_checksum,      METH_VARARGS,  "verify_checksum\n\nReturn a dict with dataok and hduok."},
+    {"write_checksum"               , (PyCFunction)PyFITSObject_write_checksum               , METH_VARARGS                 , "write_checksum\n\nCompute and write the checksums into the header."}                                                                           , 
+    {"verify_checksum"              , (PyCFunction)PyFITSObject_verify_checksum              , METH_VARARGS                 , "verify_checksum\n\nReturn a dict with dataok and hduok."}                                                                                      , 
 
-    {"write_image",          (PyCFunction)PyFITSObject_write_image,          METH_VARARGS,  "write_image\n\nWrite the input image to a new extension."},
-    {"write_column",         (PyCFunction)PyFITSObject_write_column,         METH_KEYWORDS, "write_column\n\nWrite a column into the specifed hdu."},
-    {"write_columns",        (PyCFunction)PyFITSObject_write_columns,        METH_KEYWORDS, "write_columns\n\nWrite columns into the specifed hdu."},
-    {"write_var_column",     (PyCFunction)PyFITSObject_write_var_column,     METH_KEYWORDS, "write_var_column\n\nWrite a variable length column into the specifed hdu from an object array."},
-    {"write_string_key",     (PyCFunction)PyFITSObject_write_string_key,     METH_VARARGS,  "write_string_key\n\nWrite a string key into the specified HDU."},
-    {"write_double_key",     (PyCFunction)PyFITSObject_write_double_key,     METH_VARARGS,  "write_double_key\n\nWrite a double key into the specified HDU."},
+    {"write_image"                  , (PyCFunction)PyFITSObject_write_image                  , METH_VARARGS                 , "write_image\n\nWrite the input image to a new extension."}                                                                                     , 
+    {"write_column"                 , (PyCFunction)PyFITSObject_write_column                 , METH_VARARGS | METH_KEYWORDS , "write_column\n\nWrite a column into the specifed hdu."}                                                                                        , 
+    {"write_columns"                , (PyCFunction)PyFITSObject_write_columns                , METH_VARARGS | METH_KEYWORDS , "write_columns\n\nWrite columns into the specifed hdu."}                                                                                        , 
+    {"write_var_column"             , (PyCFunction)PyFITSObject_write_var_column             , METH_VARARGS | METH_KEYWORDS , "write_var_column\n\nWrite a variable length column into the specifed hdu from an object array."}                                               , 
+    {"write_string_key"             , (PyCFunction)PyFITSObject_write_string_key             , METH_VARARGS                 , "write_string_key\n\nWrite a string key into the specified HDU."}                                                                               , 
+    {"write_double_key"             , (PyCFunction)PyFITSObject_write_double_key             , METH_VARARGS                 , "write_double_key\n\nWrite a double key into the specified HDU."}                                                                               , 
 
-    {"write_long_key",       (PyCFunction)PyFITSObject_write_long_key,       METH_VARARGS,  "write_long_key\n\nWrite a long key into the specified HDU."},
-    {"write_logical_key",    (PyCFunction)PyFITSObject_write_logical_key,    METH_VARARGS,  "write_logical_key\n\nWrite a logical key into the specified HDU."},
+    {"write_long_key"               , (PyCFunction)PyFITSObject_write_long_key               , METH_VARARGS                 , "write_long_key\n\nWrite a long key into the specified HDU."}                                                                                   , 
+    {"write_logical_key"            , (PyCFunction)PyFITSObject_write_logical_key            , METH_VARARGS                 , "write_logical_key\n\nWrite a logical key into the specified HDU."}                                                                             , 
 
-    {"write_comment",        (PyCFunction)PyFITSObject_write_comment,        METH_VARARGS,  "write_comment\n\nWrite a comment into the header of the specified HDU."},
-    {"write_history",        (PyCFunction)PyFITSObject_write_history,        METH_VARARGS,  "write_history\n\nWrite history into the header of the specified HDU."},
-    {"close",                (PyCFunction)PyFITSObject_close,                METH_VARARGS,  "close\n\nClose the fits file."},
+    {"write_comment"                , (PyCFunction)PyFITSObject_write_comment                , METH_VARARGS                 , "write_comment\n\nWrite a comment into the header of the specified HDU."}                                                                       , 
+    {"write_history"                , (PyCFunction)PyFITSObject_write_history                , METH_VARARGS                 , "write_history\n\nWrite history into the header of the specified HDU."}                                                                         , 
+    {"close"                        , (PyCFunction)PyFITSObject_close                        , METH_VARARGS                 , "close\n\nClose the fits file."}                                                                                                                , 
     {NULL}  /* Sentinel */
 };
 
