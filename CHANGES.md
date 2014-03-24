@@ -28,6 +28,12 @@ Bug Fixes
 
 All changes E. Sheldon except where noted.
 
+version 0.9.4dev
+--------------------------
+Porting to python 3
+    - Porting in progress, almost all done.
+
+
 version 0.9.3
 --------------------------
 New Features
