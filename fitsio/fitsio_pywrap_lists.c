@@ -5,6 +5,62 @@
 #include <numpy/arrayobject.h> 
 #include "fitsio_pywrap_lists.h"
 
+/*
+ * Python 2.x and Python 3.x have different ideas of what a basic string
+ * and int types are. These blocks help us sort things out if we just want a
+ * "plain" integer or string
+ */
+#if PY_MAJOR_VERSION >= 3
+/*
+ * PYTHON 3 DEFINITIONS
+ */
+
+/* 
+ * The PyInt_From* macros get us a 'default' integer type from a long, etc.
+ * Implemented (if not a simple macro) in numutil.c
+ */
+#define PyInt_FromLong PyLong_FromLong
+#define PyInt_FromUnsignedLong PyLong_FromUnsignedLong
+#define PyInt_FromUnsignedLongLlong PyLong_FromUnsignedLongLong
+
+/* 
+ *  The PyInt_As* convert the integer type (long, int) into something we want
+ */
+#define PyInt_AsUnsignedLongLong PyLong_AsUnsignedLongLong
+#define PyInt_AsLongLong PyLong_AsLongLong
+#define PyInt_AsUnsignedLong PyLong_AsUnsignedLong
+#define PyInt_AsLong PyLong_AsLong
+
+/*
+ * The PyString macros generate strings for us. The 'Z' variant takes a
+ *    NUL-terminated string, while the 'N' variant accepts a length specifier
+ */
+#define PyStringZ(c) PyUnicode_FromString(c)
+#define PyStringN(c, n) PyUnicode_FromStringAndSize(c, n)
+#define PyString PyUnicode
+#define PyString_AsString PyUnicode_AsUnicode
+#define PyString_Check PyUnicode_Check
+#define PyString_FromString PyUnicode_FromString
+#define PyString_FromFormat PyUnicode_FromFormat
+#define PyString_Size PyUnicode_GET_SIZE
+#define PyString_Format PyUnicode_Format
+/*
+ * Python 3 has a revamped extension module initialization system. (See PEP
+ * 3121.) Instead of storing module state in globals, they should be stored
+ * in an interpreter specific structure. Creating modules that act correctly
+ * in both Python 2 and Python 3 is tricky.
+ * Note: the init function is also updated
+ */
+#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
+
+#else
+/*
+ * PYTHON 2 DEFINITIONS
+ */
+#define GETSTATE(m) (&_state)
+
+#endif
+
 struct i64list* i64list_new(void) {
     struct i64list* slist=NULL;
 
@@ -124,12 +180,12 @@ int stringlist_addfrom_listobj(struct stringlist* slist,
     for (i=0; i<size; i++) {
         PyObject* tmp = PyList_GetItem(listObj, i);
         const char* tmpstr;
-        if (!PyString_Check(tmp)) {
+        if (!PyBytes_Check(tmp)) {
             PyErr_Format(PyExc_ValueError, 
                          "Expected only strings in %s list.", listname);
             return 1;
         }
-        tmpstr = (const char*) PyString_AsString(tmp);
+        tmpstr = (const char*) PyBytes_AsString(tmp);
         stringlist_push(slist, tmpstr);
     }
     return 0;
